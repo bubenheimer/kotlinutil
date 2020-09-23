@@ -19,16 +19,16 @@ package org.bubenheimer.util
 import java.util.concurrent.Executor
 
 public class SerialExecutor(private val executor: Executor) : Executor {
-    private val deque: ArrayDeque<Runnable> = ArrayDeque()
+    private val deque = ArrayDeque<Runnable>()
 
     private var isRunning = false
 
-    private fun work() {
+    private val work = Runnable {
         while (true) {
             synchronized(deque) {
                 deque.removeFirstOrNull() ?: run {
                     isRunning = false
-                    return
+                    return@Runnable
                 }
             }.run()
         }
@@ -40,6 +40,6 @@ public class SerialExecutor(private val executor: Executor) : Executor {
 
             if (isRunning) return else isRunning = true
         }
-        executor.execute { work() }
+        executor.execute(work)
     }
 }
