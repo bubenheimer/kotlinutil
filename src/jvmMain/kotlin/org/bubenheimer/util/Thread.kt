@@ -17,4 +17,16 @@
 
 package org.bubenheimer.util
 
+public fun examOnThread(thread: Thread, msg: String = "") {
+    if (!thread.isCurrent()) throw IllegalStateException(
+        "Not on expected thread \"$thread\"  msg: \"$msg\""
+    )
+}
+
+public fun examOffThread(thread: Thread, msg: String = "") {
+    if (thread.isCurrent()) throw IllegalStateException(
+        "Not off thread \"$thread\"  msg: \"$msg\""
+    )
+}
+
 public fun Thread.isCurrent(): Boolean = this === Thread.currentThread()

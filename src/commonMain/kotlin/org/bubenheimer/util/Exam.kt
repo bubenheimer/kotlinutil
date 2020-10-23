@@ -14,6 +14,7 @@
  * limitations under the License.
  *
  */
+
 package org.bubenheimer.util
 
 import kotlin.contracts.ExperimentalContracts
@@ -23,176 +24,198 @@ import kotlin.contracts.contract
 public fun examIsNull(obj: Any?, msg: String = "") {
     contract { returns() implies (obj == null) }
 
-    if (obj != null) throw AssertionError("Object is not null: \"$obj\"  msg: \"$msg\"")
+    if (obj != null) throw IllegalStateException("Object is not null: \"$obj\"  msg: \"$msg\"")
 }
 
 @ExperimentalContracts
 public fun examNotNull(obj: Any?, msg: String = "") {
     contract { returns() implies (obj != null) }
 
-    if (obj == null) throw AssertionError("Object is null  msg: \"$msg\"")
+    if (obj == null) throw IllegalStateException("Object is null  msg: \"$msg\"")
 }
 
 public fun examEquals(expected: Int, actual: Int, msg: String = "") {
-    if (expected != actual) throw AssertionError(
+    if (expected != actual) throw IllegalStateException(
         "Objects not equal - expected: $expected  actual: $actual  msg: \"$msg\""
     )
 }
 
 public fun examEquals(expected: Long, actual: Long, msg: String = "") {
-    if (expected != actual) throw AssertionError(
+    if (expected != actual) throw IllegalStateException(
         "Objects not equal - expected: $expected  actual: $actual  msg: \"$msg\""
     )
 }
 
 public fun examEquals(expected: Short, actual: Short, msg: String = "") {
-    if (expected != actual) throw AssertionError(
+    if (expected != actual) throw IllegalStateException(
         "Objects not equal - expected: $expected  actual: $actual  msg: \"$msg\""
     )
 }
 
 public fun examEquals(expected: Byte, actual: Byte, msg: String = "") {
-    if (expected != actual) throw AssertionError(
+    if (expected != actual) throw IllegalStateException(
         "Objects not equal - expected: $expected  actual: $actual  msg: \"$msg\""
     )
 }
 
 public fun examEquals(expected: Char, actual: Char, msg: String = "") {
-    if (expected != actual) throw AssertionError(
+    if (expected != actual) throw IllegalStateException(
         "Objects not equal - expected: $expected  actual: $actual  msg: \"$msg\""
     )
 }
 
 public fun examEquals(expected: Any, actual: Any?, msg: String = "") {
-    if (expected != actual) throw AssertionError(
+    if (expected != actual) throw IllegalStateException(
         "Objects not equal - expected: \"$expected\"  actual: \"$actual\"  msg: \"$msg\""
     )
 }
 
 public fun examNotEquals(expected: Int, actual: Int, msg: String = "") {
-    if (expected == actual) throw AssertionError(
+    if (expected == actual) throw IllegalStateException(
         "Objects equal - expected: $expected  actual: $actual  msg: \"$msg\""
     )
 }
 
 public fun examNotEquals(expected: Long, actual: Long, msg: String = "") {
-    if (expected == actual) throw AssertionError(
+    if (expected == actual) throw IllegalStateException(
         "Objects equal - expected: $expected  actual: $actual  msg: \"$msg\""
     )
 }
 
 public fun examNotEquals(expected: Short, actual: Short, msg: String = "") {
-    if (expected == actual) throw AssertionError(
+    if (expected == actual) throw IllegalStateException(
         "Objects equal - expected: $expected  actual: $actual  msg: \"$msg\""
     )
 }
 
 public fun examNotEquals(expected: Byte, actual: Byte, msg: String = "") {
-    if (expected == actual) throw AssertionError(
+    if (expected == actual) throw IllegalStateException(
         "Objects equal - expected: $expected  actual: $actual  msg: \"$msg\""
     )
 }
 
 public fun examNotEquals(expected: Char, actual: Char, msg: String = "") {
-    if (expected == actual) throw AssertionError(
+    if (expected == actual) throw IllegalStateException(
         "Objects equal - expected: $expected  actual: $actual  msg: \"$msg\""
     )
 }
 
 public fun examNotEquals(expected: Any, actual: Any?, msg: String = "") {
-    if (expected == actual) throw AssertionError(
+    if (expected == actual) throw IllegalStateException(
         "Objects equal - expected: \"$expected\"  actual: \"$actual\"  msg: \"$msg\""
     )
 }
 
 public fun examSame(expected: Any, actual: Any, msg: String = "") {
-    if (expected !== actual) throw AssertionError(
+    if (expected !== actual) throw IllegalStateException(
         "Objects not the same - expected: \"$expected\"  actual: \"$actual\"  msg: \"$msg\""
     )
 }
 
 public fun examNotSame(expected: Any, actual: Any?, msg: String = "") {
-    if (expected === actual) throw AssertionError(
+    if (expected === actual) throw IllegalStateException(
         "Objects are the same - expected: \"$expected\"  actual: \"$actual\"  msg: \"$msg\""
     )
 }
 
 public fun examLessThan(value1: Int, value2: Int, msg: String = "") {
-    if (value1 >= value2) throw AssertionError("$value1 is not less than $value2  msg: \"$msg\"")
+    if (value1 >= value2) {
+        throw IllegalStateException("$value1 is not less than $value2  msg: \"$msg\"")
+    }
 }
 
 public fun examLessThan(value1: Long, value2: Long, msg: String = "") {
-    if (value1 >= value2) throw AssertionError("$value1 is not less than $value2  msg: \"$msg\"")
+    if (value1 >= value2) {
+        throw IllegalStateException("$value1 is not less than $value2  msg: \"$msg\"")
+    }
 }
 
 public fun examLessOrEqual(value1: Int, value2: Int, msg: String = "") {
-    if (value1 > value2) throw AssertionError("$value1 is greater than $value2  msg: \"$msg\"")
+    if (value1 > value2) {
+        throw IllegalStateException("$value1 is greater than $value2  msg: \"$msg\"")
+    }
 }
 
 public fun examLessOrEqual(value1: Long, value2: Long, msg: String = "") {
-    if (value1 > value2) throw AssertionError("$value1 is greater than $value2  msg: \"$msg\"")
+    if (value1 > value2) {
+        throw IllegalStateException("$value1 is greater than $value2  msg: \"$msg\"")
+    }
+}
+
+public fun <T : Comparable<T>> examInRange(value: T, range: ClosedRange<T>, msg: String = "") {
+    if (value !in range) throw IllegalStateException("$value is not in range $range  msg: \"$msg\"")
 }
 
 public fun examInRangeInclusive(lowerBound: Int, value: Int, upperBound: Int, msg: String = "") {
-    if (lowerBound > value || value > upperBound) throw AssertionError(
+    if (lowerBound > value || value > upperBound) throw IllegalStateException(
         "$value is not in range [$lowerBound, $upperBound]  msg: \"$msg\""
     )
 }
 
 public fun examInRangeInclusive(lowerBound: Long, value: Long, upperBound: Long, msg: String = "") {
-    if (lowerBound > value || value > upperBound) throw AssertionError(
+    if (lowerBound > value || value > upperBound) throw IllegalStateException(
         "$value is not in range [$lowerBound, $upperBound]  msg: \"$msg\""
     )
 }
 
 public fun examInRangeExclusive(lowerBound: Int, value: Int, upperBound: Int, msg: String = "") {
-    if (lowerBound >= value || value >= upperBound) throw AssertionError(
+    if (lowerBound >= value || value >= upperBound) throw IllegalStateException(
         "$value is not in range ]$lowerBound, $upperBound[  msg: \"$msg\""
     )
 }
 
 public fun examInRangeExclusive(lowerBound: Long, value: Long, upperBound: Long, msg: String = "") {
-    if (lowerBound >= value || value >= upperBound) throw AssertionError(
+    if (lowerBound >= value || value >= upperBound) throw IllegalStateException(
         "$value is not in range ]$lowerBound, $upperBound[  msg: \"$msg\""
     )
 }
 
 public fun examIsOneOf(value: Int, vararg set: Int, msg: String = "") {
-    if (set.none { value == it }) throw AssertionError("$value is not in set $set  msg: \"$msg\"")
+    if (set.none { value == it }) {
+        throw IllegalStateException("$value is not in set $set  msg: \"$msg\"")
+    }
 }
 
 public fun examIsOneOf(value: Long, vararg set: Long, msg: String = "") {
-    if (set.none { value == it }) throw AssertionError("$value is not in set $set  msg: \"$msg\"")
+    if (set.none { value == it }) {
+        throw IllegalStateException("$value is not in set $set  msg: \"$msg\"")
+    }
 }
 
 public fun examIsOneOf(value: Any?, vararg set: Any, msg: String = "") {
-    if (set.none { value == it }) throw AssertionError("$value is not in set $set  msg: \"$msg\"")
+    if (set.none { value == it }) {
+        throw IllegalStateException("$value is not in set $set  msg: \"$msg\"")
+    }
 }
 
 public fun examNotOneOf(value: Int, vararg set: Int, msg: String = "") {
-    if (set.any { value == it }) throw AssertionError("$value is in set $set  msg: \"$msg\"")
+    if (set.any { value == it }) {
+        throw IllegalStateException("$value is in set $set  msg: \"$msg\"")
+    }
 }
 
 public fun examNotOneOf(value: Long, vararg set: Long, msg: String = "") {
-    if (set.any { value == it }) throw AssertionError("$value is in set $set  msg: \"$msg\"")
+    if (set.any { value == it }) {
+        throw IllegalStateException("$value is in set $set  msg: \"$msg\"")
+    }
 }
 
 public fun examNotOneOf(value: Any?, vararg set: Any, msg: String = "") {
-    if (set.any { value == it }) throw AssertionError("$value is in set $set  msg: \"$msg\"")
+    if (set.any { value == it }) throw IllegalStateException("$value is in set $set  msg: \"$msg\"")
 }
 
 @ExperimentalContracts
 public fun examIsTrue(value: Boolean, msg: String = "") {
     contract { returns() implies value }
 
-    if (!value) throw AssertionError("Condition was false  msg: \"$msg\"")
+    if (!value) throw IllegalStateException("Condition was false  msg: \"$msg\"")
 }
 
 @ExperimentalContracts
 public fun examIsFalse(value: Boolean, msg: String = "") {
     contract { returns() implies !value }
 
-    if (value) throw AssertionError("Condition was true  msg: \"$msg\"")
+    if (value) throw IllegalStateException("Condition was true  msg: \"$msg\"")
 }
 
 public fun examFail(function: () -> Any?, msg: String = "") {
@@ -201,32 +224,20 @@ public fun examFail(function: () -> Any?, msg: String = "") {
     } catch (e: Throwable) {
         return
     }
-    throw AssertionError("Function did not fail  msg: \"$msg\"")
+    throw IllegalStateException("Function did not fail  msg: \"$msg\"")
 }
 
 @ExperimentalContracts
 public fun examFail(msg: String = ""): Nothing {
     contract { returns() implies false }
 
-    throw AssertionError("Forced failure  msg: \"$msg\"")
+    throw IllegalStateException("Forced failure  msg: \"$msg\"")
 }
 
 public fun examNoFail(function: () -> Any?, msg: String = "") {
     try {
         function()
     } catch (e: Throwable) {
-        throw AssertionError("Function failed with exception \"$e\"  msg: \"$msg\"", e)
+        throw IllegalStateException("Function failed with exception \"$e\"  msg: \"$msg\"", e)
     }
-}
-
-public fun examOnThread(thread: Thread, msg: String = "") {
-    if (!thread.isCurrent()) throw AssertionError(
-        "Not on expected thread \"$thread\"  msg: \"$msg\""
-    )
-}
-
-public fun examOffThread(thread: Thread, msg: String = "") {
-    if (thread.isCurrent()) throw AssertionError(
-        "Not off thread \"$thread\"  msg: \"$msg\""
-    )
 }

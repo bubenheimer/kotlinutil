@@ -21,10 +21,11 @@ buildscript {
     repositories {
         gradlePluginPortal()
     }
+}
 
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
+plugins {
+    id("maven-publish")
+    id("org.jetbrains.kotlin.multiplatform") version("$kotlin_version")
 }
 
 repositories {
@@ -32,39 +33,35 @@ repositories {
     jcenter()
 }
 
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: 'maven-publish'
-
-group = 'org.bubenheimer'
-version = '1.0-SNAPSHOT'
-
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
 kotlin {
-    explicitApi()
-}
+    targets {
+        all {
+            compilations {
+                all {
+                    kotlinOptions {
+                        freeCompilerArgs = [
+                                "-progressive"
+                        ]
+                    }
+                }
 
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.6"
-        freeCompilerArgs = [
-                "-progressive"
-        ]
+                main {
+                    explicitApi()
+                }
+            }
+        }
     }
-}
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
+    jvm() {
+        compilations {
+            all {
+                kotlinOptions {
+                    jvmTarget = "1.6"
+                }
+            }
         }
     }
 }
 
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-}
+group = 'org.bubenheimer'
+version = '1.0-SNAPSHOT'
