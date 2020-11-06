@@ -2,10 +2,10 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
-      <module name="kotlinutil.commonMain" target="1.6" />
-      <module name="kotlinutil.commonTest" target="1.6" />
-      <module name="kotlinutil.jvmMain" target="1.6" />
-      <module name="kotlinutil.jvmTest" target="1.6" />
+      <module name="kotlinutil.commonMain" target="1.8" />
+      <module name="kotlinutil.commonTest" target="1.8" />
+      <module name="kotlinutil.jvmMain" target="1.8" />
+      <module name="kotlinutil.jvmTest" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
