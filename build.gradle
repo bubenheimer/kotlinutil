@@ -34,14 +34,21 @@ repositories {
 }
 
 kotlin {
+    sourceSets {
+        all {
+            languageSettings {
+                enableLanguageFeature('InlineClasses')
+                progressiveMode = true
+            }
+        }
+    }
+
     targets {
         all {
             compilations {
                 all {
                     kotlinOptions {
-                        freeCompilerArgs = [
-                                "-progressive"
-                        ]
+                        verbose = true
                     }
                 }
 
