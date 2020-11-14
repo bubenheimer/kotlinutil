@@ -17,7 +17,6 @@
 
 package org.bubenheimer.util
 
-/**
- * Intended for turning `when` into an expression (exhaustive when)
- */
-public val <T> T.expr: T get() = this
+public expect class AtomicInt public constructor(value: Int) {
+    public fun addAndGet(delta: Int): Int
+}

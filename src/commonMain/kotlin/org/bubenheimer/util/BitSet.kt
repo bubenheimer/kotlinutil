@@ -17,7 +17,7 @@
 
 package org.bubenheimer.util
 
-/**
- * Intended for turning `when` into an expression (exhaustive when)
- */
-public val <T> T.expr: T get() = this
+public expect class BitSet public constructor(size: Int) {
+    public operator fun get(index: Int): Boolean
+    public operator fun set(index: Int, value: Boolean)
+}
