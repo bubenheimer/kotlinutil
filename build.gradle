@@ -37,8 +37,8 @@ kotlin {
     sourceSets {
         all {
             languageSettings {
-                enableLanguageFeature('InlineClasses')
                 progressiveMode = true
+                enableLanguageFeature('InlineClasses')
             }
         }
     }
