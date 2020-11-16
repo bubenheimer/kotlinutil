@@ -17,8 +17,11 @@
 
 package org.bubenheimer.util
 
-@Suppress("NON_PUBLIC_PRIMARY_CONSTRUCTOR_OF_INLINE_CLASS")
-public inline class Optional<out V : Any>
+//TODO this should be an inline class, but it appears that I cannot pass it through layers of Java
+// without the class getting mangled; revert once I don't pass it through Java layers anymore or if
+// that behavior ever improves; the class can be readily made inline by replacing "sealed" with
+// "inline"
+public data class Optional<out V : Any>
 /**
  * @suppress Internal API
  */
