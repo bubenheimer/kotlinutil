@@ -28,7 +28,7 @@ public inline class Entity<out V>
      */
     @PublishedApi internal val value: Any?
 ) {
-    public val isValid: Boolean
+    public inline val isValid: Boolean
         get() = value !== Invalid
 
     public inline val isInvalid: Boolean
