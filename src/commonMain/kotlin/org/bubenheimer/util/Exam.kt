@@ -146,28 +146,10 @@ public fun <T : Comparable<T>> examInRange(value: T, range: ClosedRange<T>, msg:
     if (value !in range) throw IllegalStateException("$value is not in range $range  msg: \"$msg\"")
 }
 
-public fun examInRangeInclusive(lowerBound: Int, value: Int, upperBound: Int, msg: String = "") {
-    if (lowerBound > value || value > upperBound) throw IllegalStateException(
-        "$value is not in range [$lowerBound, $upperBound]  msg: \"$msg\""
-    )
-}
-
-public fun examInRangeInclusive(lowerBound: Long, value: Long, upperBound: Long, msg: String = "") {
-    if (lowerBound > value || value > upperBound) throw IllegalStateException(
-        "$value is not in range [$lowerBound, $upperBound]  msg: \"$msg\""
-    )
-}
-
-public fun examInRangeExclusive(lowerBound: Int, value: Int, upperBound: Int, msg: String = "") {
-    if (lowerBound >= value || value >= upperBound) throw IllegalStateException(
-        "$value is not in range ]$lowerBound, $upperBound[  msg: \"$msg\""
-    )
-}
-
-public fun examInRangeExclusive(lowerBound: Long, value: Long, upperBound: Long, msg: String = "") {
-    if (lowerBound >= value || value >= upperBound) throw IllegalStateException(
-        "$value is not in range ]$lowerBound, $upperBound[  msg: \"$msg\""
-    )
+public fun <T> examIsOneOf(value: T, iterable: Iterable<T>, msg: String = "") {
+    if (!iterable.contains(value)) {
+        throw IllegalStateException("$value is not in iterable $iterable  msg: \"$msg\"")
+    }
 }
 
 public fun examIsOneOf(value: Int, vararg set: Int, msg: String = "") {
@@ -185,6 +167,12 @@ public fun examIsOneOf(value: Long, vararg set: Long, msg: String = "") {
 public fun examIsOneOf(value: Any?, vararg set: Any, msg: String = "") {
     if (set.none { value == it }) {
         throw IllegalStateException("$value is not in set $set  msg: \"$msg\"")
+    }
+}
+
+public fun <T> examNotOneOf(value: T, iterable: Iterable<T>, msg: String = "") {
+    if (iterable.contains(value)) {
+        throw IllegalStateException("$value is in iterable $iterable  msg: \"$msg\"")
     }
 }
 
