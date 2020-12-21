@@ -16,7 +16,7 @@
  */
 
 buildscript {
-    ext.kotlin_version = '1.4.20'
+    ext.kotlin_version = '1.4.21'
 
     repositories {
         gradlePluginPortal()
@@ -39,6 +39,12 @@ kotlin {
             languageSettings {
                 progressiveMode = true
                 enableLanguageFeature('InlineClasses')
+            }
+        }
+
+        commonMain {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
             }
         }
 
