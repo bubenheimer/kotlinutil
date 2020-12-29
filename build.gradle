@@ -39,6 +39,7 @@ kotlin {
             languageSettings {
                 progressiveMode = true
                 enableLanguageFeature('InlineClasses')
+                useExperimentalAnnotation("kotlin.time.ExperimentalTime")
             }
         }
 

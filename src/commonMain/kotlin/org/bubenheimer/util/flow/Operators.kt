@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flow
+import kotlin.time.Duration
 
 // Modelled after Flow.withIndex()
 public fun <T> Flow<T>.everyNth(n: Int): Flow<T> = flow {
@@ -36,11 +37,27 @@ public fun <T> Flow<T>.everyNth(n: Int): Flow<T> = flow {
     }
 }
 
+public fun <T> Flow<T>.delay(duration: Duration): Flow<T> = flow {
+    collect {
+        delay(duration)
+        emit(it)
+    }
+}
+
+public fun Flow<Duration>.delay(): Flow<Unit> = flow {
+    collect {
+        delay(it)
+        emit(Unit)
+    }
+}
+
+public fun infiniteFlow(): Flow<Unit> = flow { while (true) emit(Unit) }
+
 public fun <T, K> Flow<T>.groupBy(
     capacity: Int = Channel.RENDEZVOUS,
     onBufferOverflow: BufferOverflow = BufferOverflow.SUSPEND,
     onUndeliveredElement: ((T) -> Unit)? = null,
-    keySelector: (T) -> K
+    keySelector: (T) -> K,
 ): Flow<Pair<K, Flow<T>>> = flow {
     val map: MutableMap<K, SendChannel<T>> = hashMapOf()
 
