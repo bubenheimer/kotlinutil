@@ -37,6 +37,18 @@ public fun <T> Flow<T>.everyNth(n: Int): Flow<T> = flow {
     }
 }
 
+public inline fun <T> Flow<T>.specialFirst(crossinline action: suspend (T) -> Unit): Flow<T> =
+    flow {
+        var pastFirst = false
+
+        collect {
+            if (pastFirst) emit(it) else {
+                pastFirst = true
+                action(it)
+            }
+        }
+    }
+
 public fun <T> Flow<T>.delay(duration: Duration): Flow<T> = flow {
     collect {
         delay(duration)
