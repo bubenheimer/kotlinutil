@@ -49,6 +49,19 @@ public inline fun <T> Flow<T>.specialFirst(crossinline action: suspend (T) -> Un
         }
     }
 
+private val NIL = Any()
+
+public fun <T> Flow<T>.filterByPrevious(filter: (T, T) -> Boolean): Flow<T> = flow {
+    @Suppress("UNCHECKED_CAST")
+    var previous: T = NIL as T
+    collect {
+        if (previous === NIL || filter(previous, it)) {
+            previous = it
+            emit(it)
+        }
+    }
+}
+
 public fun <T> Flow<T>.delay(duration: Duration): Flow<T> = flow {
     collect {
         delay(duration)
