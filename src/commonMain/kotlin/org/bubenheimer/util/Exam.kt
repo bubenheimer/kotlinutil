@@ -34,6 +34,12 @@ public fun examNotNull(obj: Any?, msg: String = "") {
     if (obj == null) throw IllegalStateException("Object is null  msg: \"$msg\"")
 }
 
+public inline fun <reified T> examIsInstance(value: Any?, msg: String = "") {
+    if (value !is T) throw IllegalStateException(
+        "Object \"$value\" not of type ${T::class}  msg: \"$msg\""
+    )
+}
+
 public fun examEquals(expected: Int, actual: Int, msg: String = "") {
     if (expected != actual) throw IllegalStateException(
         "Objects not equal - expected: $expected  actual: $actual  msg: \"$msg\""
