@@ -136,6 +136,12 @@ public fun examLessThan(value1: Long, value2: Long, msg: String = "") {
     }
 }
 
+public fun <T> examLessThan(value1: Comparable<T>, value2: T, msg: String = "") {
+    if (value1 >= value2) {
+        throw IllegalStateException("$value1 is not less than $value2  msg: \"$msg\"")
+    }
+}
+
 public fun examLessOrEqual(value1: Int, value2: Int, msg: String = "") {
     if (value1 > value2) {
         throw IllegalStateException("$value1 is greater than $value2  msg: \"$msg\"")
@@ -143,6 +149,12 @@ public fun examLessOrEqual(value1: Int, value2: Int, msg: String = "") {
 }
 
 public fun examLessOrEqual(value1: Long, value2: Long, msg: String = "") {
+    if (value1 > value2) {
+        throw IllegalStateException("$value1 is greater than $value2  msg: \"$msg\"")
+    }
+}
+
+public fun <T> examLessOrEqual(value1: Comparable<T>, value2: T, msg: String = "") {
     if (value1 > value2) {
         throw IllegalStateException("$value1 is greater than $value2  msg: \"$msg\"")
     }
