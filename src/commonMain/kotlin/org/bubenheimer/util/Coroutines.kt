@@ -22,8 +22,8 @@ import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.withContext
 
 public suspend inline fun awaitCancellation(crossinline block: suspend () -> Unit): Nothing =
-        try {
-            awaitCancellation()
-        } finally {
-            withContext(NonCancellable) { block() }
-        }
+    try {
+        awaitCancellation()
+    } finally {
+        withContext(NonCancellable) { block() }
+    }
