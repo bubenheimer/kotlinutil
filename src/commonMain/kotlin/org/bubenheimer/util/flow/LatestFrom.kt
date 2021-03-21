@@ -1,5 +1,7 @@
 package org.bubenheimer.util.flow
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 
@@ -8,8 +10,10 @@ public fun <A, B, R> Flow<A>.waitForLatestFrom(
     transform: suspend (A, B) -> R
 ): Flow<R> = flow {
     coroutineScope {
-        val bStateFlow = b.stateIn(this)
+        val bStateFlow: StateFlow<B> = b.stateFlow(this)
         collect { emit(transform(it, bStateFlow.value)) }
+        // After primary flow completes normally, cancel any StateFlow generation sharing our scope
+        coroutineContext.cancel()
     }
 }
 
@@ -19,9 +23,11 @@ public fun <A, B, C, R> Flow<A>.waitForLatestFrom(
     transform: suspend (A, B, C) -> R
 ): Flow<R> = flow {
     coroutineScope {
-        val bStateFlow = b.stateIn(this)
-        val cStateFlow = c.stateIn(this)
+        val bStateFlow = b.stateFlow(this)
+        val cStateFlow = c.stateFlow(this)
         collect { emit(transform(it, bStateFlow.value, cStateFlow.value)) }
+        // After primary flow completes normally, cancel any StateFlow generation sharing our scope
+        coroutineContext.cancel()
     }
 }
 
@@ -30,7 +36,12 @@ public fun <A, B, R> Flow<A>.transformAndWaitForLatestFrom(
     transform: suspend FlowCollector<R>.(A, B) -> Unit
 ): Flow<R> = flow {
     coroutineScope {
-        val bStateFlow = b.stateIn(this)
+        val bStateFlow = b.stateFlow(this)
         collect { transform(it, bStateFlow.value) }
+        // After primary flow completes normally, cancel any StateFlow generation sharing our scope
+        coroutineContext.cancel()
     }
 }
+
+private suspend fun <T> Flow<T>.stateFlow(scope: CoroutineScope): StateFlow<T> =
+    this as? StateFlow ?: stateIn(scope)
