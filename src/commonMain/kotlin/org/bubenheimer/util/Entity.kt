@@ -17,7 +17,10 @@
 
 package org.bubenheimer.util
 
-public inline class Entity<out V>
+import kotlin.jvm.JvmInline
+
+@JvmInline
+public value class Entity<out V>
 /**
  * @suppress Internal API
  */

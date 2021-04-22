@@ -30,7 +30,7 @@ plugins {
 
 repositories {
     mavenLocal()
-    jcenter()
+    mavenCentral()
 }
 
 kotlin {
@@ -38,7 +38,6 @@ kotlin {
         all {
             languageSettings {
                 progressiveMode = true
-                enableLanguageFeature('InlineClasses')
                 useExperimentalAnnotation("kotlin.time.ExperimentalTime")
             }
         }
@@ -51,14 +50,7 @@ kotlin {
 
         commonTest {
             dependencies {
-                implementation kotlin('test-common')
-                implementation kotlin('test-annotations-common')
-            }
-        }
-
-        jvmTest {
-            dependencies {
-                implementation kotlin('test-junit')
+                implementation kotlin("test")
             }
         }
     }
@@ -84,7 +76,6 @@ kotlin {
             all {
                 kotlinOptions {
                     jvmTarget = "1.8"
-                    useIR = true
                     freeCompilerArgs = [
                             "-Xjvm-default=all"
                     ]
