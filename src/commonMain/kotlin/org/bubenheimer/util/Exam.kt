@@ -18,6 +18,7 @@
 package org.bubenheimer.util
 
 import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 @ExperimentalContracts
@@ -224,7 +225,13 @@ public fun examIsFalse(value: Boolean, msg: String = "") {
     if (value) throw IllegalStateException("Condition was true  msg: \"$msg\"")
 }
 
-public fun examFail(function: () -> Any?, msg: String = "") {
+/**
+ * Not inline to preserve ability to strip call via optimization tools like Proguard
+ */
+@ExperimentalContracts
+public fun examFail(msg: String = "", function: () -> Any?) {
+    contract { callsInPlace(function, InvocationKind.EXACTLY_ONCE) }
+
     try {
         function()
     } catch (e: Throwable) {
@@ -240,7 +247,13 @@ public fun examFail(msg: String = ""): Nothing {
     throw IllegalStateException("Forced failure  msg: \"$msg\"")
 }
 
-public fun examNoFail(function: () -> Any?, msg: String = "") {
+/**
+ * Not inline to preserve ability to strip call via optimization tools like Proguard
+ */
+@ExperimentalContracts
+public fun examNoFail(msg: String = "", function: () -> Any?) {
+    contract { callsInPlace(function, InvocationKind.EXACTLY_ONCE) }
+
     try {
         function()
     } catch (e: Throwable) {
