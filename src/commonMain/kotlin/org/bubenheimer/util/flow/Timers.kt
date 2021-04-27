@@ -26,6 +26,13 @@ import kotlin.time.Duration
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 
+public fun fixedDelayFlow(interval: Duration): Flow<Unit> = flow {
+    while (true) {
+        emit(Unit)
+        delay(interval)
+    }
+}
+
 public fun TimeSource.fixedRateFlow(interval: Duration): Flow<Unit> = flow {
     var nextMark = markNow()
 
@@ -42,5 +49,8 @@ public fun <T> Flow<T>.takeFor(
 ): Flow<T> = flow {
     val endMark: TimeMark = timeSource.markNow() + interval
 
-    emitAll(takeWhile { endMark.hasNotPassedNow() })
+    emitAll(takeUntil(endMark))
 }
+
+public fun <T> Flow<T>.takeUntil(timeMark: TimeMark): Flow<T> =
+    takeWhile { timeMark.hasNotPassedNow() }
