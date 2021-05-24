@@ -20,50 +20,36 @@ package org.bubenheimer.util
 import kotlin.jvm.JvmInline
 
 @JvmInline
-public value class Entity<out V>
-/**
- * @suppress Internal API
- */
-@PublishedApi internal constructor(
-    /**
-     * @suppress Internal API
-     */
-    @PublishedApi internal val value: Any?
-) {
-    public inline val isValid: Boolean
+public value class Entity<out V> private constructor(private val value: Any?) {
+    public val valid: Boolean
         get() = value !== Invalid
 
-    public inline val isInvalid: Boolean
+    public val invalid: Boolean
         get() = value === Invalid
 
     /**
      * @suppress Internal API
      */
     @PublishedApi
-    internal inline val validValue: V
+    internal val validValue: V
         @Suppress("UNCHECKED_CAST")
         get() = value as V
 
     override fun toString(): String {
-        return if (isValid) "Valid($validValue)" else "Invalid"
+        return if (valid) "Valid($validValue)" else "Invalid"
     }
 
-    /**
-     * @suppress Internal API
-     */
-    @PublishedApi
-    internal object Invalid
+    private object Invalid
 
-    @Suppress("NOTHING_TO_INLINE")
     public companion object {
-        public inline fun <T> valid(value: T): Entity<T> = Entity(value)
-        public inline fun <T> invalid(): Entity<T> = Entity(Invalid)
+        public fun <T> Valid(value: T): Entity<T> = Entity(value)
+        public fun <T> Invalid(): Entity<T> = Entity(Invalid)
     }
 }
 
 @Suppress("UNCHECKED_CAST")
 public inline fun <R, V> Entity<V>.fold(onValid: (V) -> R, onInvalid: () -> R): R =
-    if (isValid) onValid(validValue) else onInvalid()
+    if (valid) onValid(validValue) else onInvalid()
 
 public inline fun <R, V : R> Entity<V>.getOrElse(onInvalid: () -> R): R =
     fold({ it }, onInvalid)
