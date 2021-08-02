@@ -37,7 +37,7 @@ public fun <T> Flow<T>.everyNth(n: Int): Flow<T> = flow {
     }
 }
 
-public inline fun <T> Flow<T>.specialFirst(crossinline action: suspend (T) -> Unit): Flow<T> =
+public inline fun <T> Flow<T>.onFirst(crossinline action: suspend (T) -> Unit): Flow<T> =
     flow {
         var pastFirst = false
 
