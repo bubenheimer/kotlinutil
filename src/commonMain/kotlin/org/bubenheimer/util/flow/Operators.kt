@@ -42,10 +42,12 @@ public inline fun <T> Flow<T>.onFirst(crossinline action: suspend (T) -> Unit): 
         var pastFirst = false
 
         collect {
-            if (pastFirst) emit(it) else {
+            if (!pastFirst) {
                 pastFirst = true
                 action(it)
             }
+
+            emit(it)
         }
     }
 
