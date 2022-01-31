@@ -35,13 +35,19 @@ public fun examNotNull(obj: Any?, msg: String = "") {
     if (obj == null) throw IllegalStateException("Object is null  msg: \"$msg\"")
 }
 
+@ExperimentalContracts
 public inline fun <reified T> examIsInstance(value: Any?, msg: String = "") {
+    contract { returns() implies (value is T) }
+
     if (value !is T) throw IllegalStateException(
         "Object \"$value\" not of type ${T::class}  msg: \"$msg\""
     )
 }
 
+@ExperimentalContracts
 public inline fun <reified T> examNotInstance(value: Any?, msg: String = "") {
+    contract { returns() implies (value !is T) }
+
     if (value is T) throw IllegalStateException(
         "Object \"$value\" not of type ${T::class}  msg: \"$msg\""
     )
