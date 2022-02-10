@@ -20,11 +20,17 @@ package org.bubenheimer.util.flow
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.*
 import kotlin.time.Duration
+
+/**
+ * The returned flow passes through all elements but never completes normally.
+ */
+public fun <T> Flow<T>.keepAlive(): Flow<T> = channelFlow {
+    collect(::send)
+    awaitClose()
+}.buffer(Channel.RENDEZVOUS)
 
 // Modelled after Flow.withIndex()
 public fun <T> Flow<T>.everyNth(n: Int): Flow<T> = flow {
