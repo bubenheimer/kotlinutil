@@ -15,9 +15,13 @@
  *
  */
 
+@file:OptIn(ExperimentalContracts::class)
+
 package org.bubenheimer.util
 
-import kotlin.jvm.JvmInline
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind.AT_MOST_ONCE
+import kotlin.contracts.contract
 
 @JvmInline
 public value class Entity<out V> private constructor(private val value: Any?) {
@@ -42,29 +46,54 @@ public value class Entity<out V> private constructor(private val value: Any?) {
     private object Invalid
 
     public companion object {
+        @Suppress("FunctionName")
         public fun <T> Valid(value: T): Entity<T> = Entity(value)
+
+        @Suppress("FunctionName")
         public fun <T> Invalid(): Entity<T> = Entity(Invalid)
     }
 }
 
-@Suppress("UNCHECKED_CAST")
-public inline fun <R, V> Entity<V>.fold(onValid: (V) -> R, onInvalid: () -> R): R =
-    if (valid) onValid(validValue) else onInvalid()
+public inline fun <R, V> Entity<V>.fold(onValid: (V) -> R, onInvalid: () -> R): R {
+    contract {
+        callsInPlace(onValid, AT_MOST_ONCE)
+        callsInPlace(onInvalid, AT_MOST_ONCE)
+    }
 
-public inline fun <R, V : R> Entity<V>.getOrElse(onInvalid: () -> R): R =
-    fold({ it }, onInvalid)
+    return if (valid) onValid(validValue) else onInvalid()
+}
+
+public inline fun <R, V : R> Entity<V>.getOrElse(onInvalid: () -> R): R {
+    contract { callsInPlace(onInvalid, AT_MOST_ONCE) }
+
+    return fold({ it }, onInvalid)
+}
 
 /**
  * @return A valid value (which may be `null`) or `null`
  */
-@Suppress("UNCHECKED_CAST")
 public fun <V> Entity<V>.getOrNull(): V? = getOrElse { null }
 
 /**
  * @return A valid value
  * @throws IllegalStateException when the value is invalid
  */
-@Suppress("UNCHECKED_CAST")
 @Throws(IllegalStateException::class)
 public fun <V> Entity<V>.getOrThrow(): V =
     getOrElse { throw IllegalStateException("Value is invalid") }
+
+public inline fun <V> Entity<V>.onValid(action: (V) -> Unit): Entity<V> {
+    contract { callsInPlace(action, AT_MOST_ONCE) }
+
+    if (valid) action(validValue)
+
+    return this
+}
+
+public inline fun <V> Entity<V>.onInvalid(action: () -> Unit): Entity<V> {
+    contract { callsInPlace(action, AT_MOST_ONCE) }
+
+    if (invalid) action()
+
+    return this
+}
