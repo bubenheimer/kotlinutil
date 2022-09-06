@@ -15,27 +15,26 @@
  *
  */
 
+@file:OptIn(ExperimentalContracts::class)
+
 package org.bubenheimer.util
 
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-@ExperimentalContracts
 public fun examIsNull(obj: Any?, msg: String = "") {
     contract { returns() implies (obj == null) }
 
     if (obj != null) throw IllegalStateException("Object is not null: \"$obj\"  msg: \"$msg\"")
 }
 
-@ExperimentalContracts
 public fun examNotNull(obj: Any?, msg: String = "") {
     contract { returns() implies (obj != null) }
 
     if (obj == null) throw IllegalStateException("Object is null  msg: \"$msg\"")
 }
 
-@ExperimentalContracts
 public inline fun <reified T> examIsInstance(value: Any?, msg: String = "") {
     contract { returns() implies (value is T) }
 
@@ -44,7 +43,6 @@ public inline fun <reified T> examIsInstance(value: Any?, msg: String = "") {
     )
 }
 
-@ExperimentalContracts
 public inline fun <reified T> examNotInstance(value: Any?, msg: String = "") {
     contract { returns() implies (value !is T) }
 
@@ -223,14 +221,12 @@ public fun examNotOneOf(value: Any?, vararg set: Any, msg: String = "") {
     if (set.any { value == it }) throw IllegalStateException("$value is in set $set  msg: \"$msg\"")
 }
 
-@ExperimentalContracts
 public fun examIsTrue(value: Boolean, msg: String = "") {
     contract { returns() implies value }
 
     if (!value) throw IllegalStateException("Condition was false  msg: \"$msg\"")
 }
 
-@ExperimentalContracts
 public fun examIsFalse(value: Boolean, msg: String = "") {
     contract { returns() implies !value }
 
@@ -240,7 +236,6 @@ public fun examIsFalse(value: Boolean, msg: String = "") {
 /**
  * Not inline to preserve ability to strip call via optimization tools like Proguard
  */
-@ExperimentalContracts
 public fun examFail(msg: String = "", function: () -> Any?) {
     contract { callsInPlace(function, InvocationKind.EXACTLY_ONCE) }
 
@@ -252,7 +247,6 @@ public fun examFail(msg: String = "", function: () -> Any?) {
     throw IllegalStateException("Function did not fail  msg: \"$msg\"")
 }
 
-@ExperimentalContracts
 public fun examFail(msg: String = ""): Nothing {
     contract { returns() implies false }
 
@@ -262,7 +256,6 @@ public fun examFail(msg: String = ""): Nothing {
 /**
  * Not inline to preserve ability to strip call via optimization tools like Proguard
  */
-@ExperimentalContracts
 public fun examNoFail(msg: String = "", function: () -> Any?) {
     contract { callsInPlace(function, InvocationKind.EXACTLY_ONCE) }
 
