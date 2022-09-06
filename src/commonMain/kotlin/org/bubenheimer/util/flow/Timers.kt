@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.takeWhile
 import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 
@@ -33,6 +34,7 @@ public fun fixedDelayFlow(interval: Duration): Flow<Unit> = flow {
     }
 }
 
+@OptIn(ExperimentalTime::class)
 public fun TimeSource.fixedRateFlow(interval: Duration): Flow<Unit> = flow {
     var nextMark = markNow()
 
@@ -43,6 +45,7 @@ public fun TimeSource.fixedRateFlow(interval: Duration): Flow<Unit> = flow {
     }
 }
 
+@OptIn(ExperimentalTime::class)
 public fun <T> Flow<T>.takeFor(
     interval: Duration,
     timeSource: TimeSource = TimeSource.Monotonic
@@ -52,5 +55,6 @@ public fun <T> Flow<T>.takeFor(
     emitAll(takeUntil(endMark))
 }
 
+@OptIn(ExperimentalTime::class)
 public fun <T> Flow<T>.takeUntil(timeMark: TimeMark): Flow<T> =
     takeWhile { timeMark.hasNotPassedNow() }

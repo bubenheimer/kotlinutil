@@ -38,7 +38,6 @@ kotlin {
         all {
             languageSettings {
                 progressiveMode = true
-                optIn("kotlin.time.ExperimentalTime")
             }
         }
 
