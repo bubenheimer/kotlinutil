@@ -97,3 +97,12 @@ public inline fun <V> Entity<V>.onInvalid(action: () -> Unit): Entity<V> {
 
     return this
 }
+
+public inline fun <U, V> Entity<U>.convert(transform: (U) -> V): Entity<V> {
+    contract { callsInPlace(transform, AT_MOST_ONCE) }
+
+    return fold(
+        onValid = { Entity.Valid(transform(it)) },
+        onInvalid = { Entity.Invalid() }
+    )
+}
