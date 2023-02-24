@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2020 Uli Bubenheimer
+ * Copyright (c) 2015-2023 Uli Bubenheimer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,12 @@
  */
 
 package org.bubenheimer.util
+
+import java.util.concurrent.Executor
+
+public object DirectExecutor : Executor {
+    override fun execute(command: Runnable): Unit = command.run()
+}
 
 public fun examOnThread(thread: Thread, msg: String = "") {
     if (!thread.isCurrent()) throw IllegalStateException(
