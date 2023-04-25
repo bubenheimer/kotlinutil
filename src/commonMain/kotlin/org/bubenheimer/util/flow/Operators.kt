@@ -43,19 +43,18 @@ public fun <T> Flow<T>.everyNth(n: Int): Flow<T> = flow {
     }
 }
 
-public inline fun <T> Flow<T>.onFirst(crossinline action: suspend (T) -> Unit): Flow<T> =
-    flow {
-        var pastFirst = false
+public inline fun <T> Flow<T>.onFirst(crossinline action: suspend (T) -> Unit): Flow<T> = flow {
+    var pastFirst = false
 
-        collect {
-            if (!pastFirst) {
-                pastFirst = true
-                action(it)
-            }
-
-            emit(it)
+    collect {
+        if (!pastFirst) {
+            pastFirst = true
+            action(it)
         }
+
+        emit(it)
     }
+}
 
 private val NIL = Any()
 
@@ -110,3 +109,33 @@ public fun <T, K> Flow<T>.groupBy(
         map.values.forEach { it.close() }
     }
 }
+
+/**
+ * Allow clean up after a prior element right before emitting a new element, and upon completion.
+ */
+public fun <T> Flow<T>.afterEach(
+    action: suspend (prior: T) -> Unit
+): Flow<T> = flow {
+    @Suppress("UNCHECKED_CAST")
+    var prior: T = Sentinel as T
+
+    this@afterEach
+        .onCompletion {
+            if (prior != Sentinel) {
+                action(prior)
+
+                // Release reference just in case
+                @Suppress("USELESS_CAST")
+                prior = Sentinel as T
+            }
+        }
+        .collect {
+            if (prior != Sentinel) action(prior)
+
+            prior = it
+
+            emit(it)
+        }
+}
+
+private val Sentinel: Any = Any()
