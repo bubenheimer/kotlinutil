@@ -12,25 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-buildscript {
-    ext.kotlin_version = '1.9.10'
-
-    repositories {
-        gradlePluginPortal()
-    }
-}
-
 plugins {
+    alias(libs.plugins.kotlin.multiplatform)
     id("maven-publish")
-    id("org.jetbrains.kotlin.multiplatform") version("$kotlin_version")
-}
-
-repositories {
-    mavenLocal()
-    mavenCentral()
 }
 
 kotlin {
@@ -43,7 +29,7 @@ kotlin {
 
         commonMain {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
 
@@ -74,7 +60,7 @@ kotlin {
         compilations {
             all {
                 kotlinOptions {
-                    jvmTarget = "11"
+                    jvmTarget = libs.versions.java.get()
                     freeCompilerArgs = [
                             "-Xjvm-default=all"
                     ]
