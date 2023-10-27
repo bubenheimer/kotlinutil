@@ -5,7 +5,7 @@
 License
 -------
 
-    Copyright (c) 2015-2020 Uli Bubenheimer
+    Copyright (c) 2023 Uli Bubenheimer
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
