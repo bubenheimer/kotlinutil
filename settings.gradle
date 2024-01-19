@@ -29,7 +29,7 @@ dependencyResolutionManagement {
         libs {
             version('java', JavaVersion.VERSION_11.toString())
 
-            version('kotlin', '1.9.10')
+            version('kotlin', '1.9.22')
 
             version('kotlinx-coroutines', '1.7.3')
 
