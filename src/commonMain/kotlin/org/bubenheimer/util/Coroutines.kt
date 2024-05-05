@@ -16,6 +16,7 @@
 
 package org.bubenheimer.util
 
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.withContext
@@ -26,3 +27,5 @@ public suspend inline fun awaitCancellation(crossinline block: suspend () -> Uni
     } finally {
         withContext(NonCancellable) { block() }
     }
+
+public val CompletedJob: Job = Job().apply { complete() }
