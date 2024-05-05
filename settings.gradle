@@ -24,22 +24,4 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
     }
-
-    versionCatalogs {
-        libs {
-            version('java', JavaVersion.VERSION_11.toString())
-
-            version('kotlin', '1.9.22')
-
-            version('kotlinx-coroutines', '1.7.3')
-
-
-            plugin('kotlin-multiplatform', 'org.jetbrains.kotlin.multiplatform')
-                    .versionRef('kotlin')
-
-
-            library('kotlinx-coroutines-core', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-core')
-                    .versionRef('kotlinx-coroutines')
-        }
-    }
 }

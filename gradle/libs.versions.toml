@@ -1,0 +1,17 @@
+[versions]
+
+java = '11'
+
+kotlin = '1.9.23'
+
+kotlinx-coroutines = '1.8.0'
+
+
+[libraries]
+
+kotlinx-coroutines-core = { module = 'org.jetbrains.kotlinx:kotlinx-coroutines-core', version.ref = 'kotlinx-coroutines' }
+
+
+[plugins]
+
+kotlin-multiplatform = { id = 'org.jetbrains.kotlin.multiplatform', version.ref = 'kotlin' }
