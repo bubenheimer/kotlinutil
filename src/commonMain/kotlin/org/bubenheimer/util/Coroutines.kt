@@ -28,4 +28,5 @@ public suspend inline fun awaitCancellation(crossinline block: suspend () -> Uni
         withContext(NonCancellable) { block() }
     }
 
-public val CompletedJob: Job = Job().apply { complete() }
+public val CompletedJob: Job
+    get() = Job().apply { complete() }
