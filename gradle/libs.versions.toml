@@ -2,9 +2,9 @@
 
 java = '11'
 
-kotlin = '1.9.23'
+kotlin = '1.9.25'
 
-kotlinx-coroutines = '1.8.0'
+kotlinx-coroutines = '1.8.1'
 
 
 [libraries]
