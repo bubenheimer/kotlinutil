@@ -20,6 +20,10 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain {
+        jvmToolchain(libs.versions.java.toolchain.get().toInteger())
+    }
+
     sourceSets {
         all {
             languageSettings {
@@ -60,7 +64,7 @@ kotlin {
         compilations {
             all {
                 kotlinOptions {
-                    jvmTarget = libs.versions.java.get()
+                    jvmTarget = libs.versions.java.source.get()
                     freeCompilerArgs = [
                             "-Xjvm-default=all"
                     ]

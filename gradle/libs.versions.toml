@@ -1,6 +1,8 @@
 [versions]
 
-java = '11'
+java-source = '11'
+
+java-toolchain = '17'
 
 kotlin = '1.9.25'
 
