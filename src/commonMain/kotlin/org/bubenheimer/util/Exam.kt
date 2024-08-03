@@ -236,7 +236,7 @@ public fun examIsFalse(value: Boolean, msg: String = "") {
  * Not inline to preserve ability to strip call via optimization tools like Proguard
  */
 public fun examFail(msg: String = "", function: () -> Any?) {
-    contract { callsInPlace(function, InvocationKind.EXACTLY_ONCE) }
+    contract { callsInPlace(function, InvocationKind.AT_MOST_ONCE) }
 
     try {
         function()
