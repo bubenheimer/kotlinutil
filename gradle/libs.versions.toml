@@ -4,7 +4,7 @@ java-source = '11'
 
 java-toolchain = '17'
 
-kotlin = '2.0.10'
+kotlin = '2.0.20'
 
 kotlinx-coroutines = '1.8.1'
 
