@@ -42,18 +42,18 @@ public fun <T> Flow<T>.everyNth(n: Int): Flow<T> = flow {
     }
 }
 
-public inline fun <T> Flow<T>.onFirst(
+public inline fun <T> Flow<T>.transformFirst(
     crossinline action: suspend FlowCollector<T>.(T) -> Unit
 ): Flow<T> = flow {
     var pastFirst = false
 
     collect {
-        if (!pastFirst) {
+        if (pastFirst) {
+            emit(it)
+        } else {
             pastFirst = true
             action(it)
         }
-
-        emit(it)
     }
 }
 
