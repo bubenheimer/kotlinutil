@@ -26,38 +26,53 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 
+/**
+ * [GitHub issue #1315](https://github.com/Kotlin/kotlinx.coroutines/pull/1315)
+ *
+ * [GitHub issue #1498](https://github.com/Kotlin/kotlinx.coroutines/issues/1498)
+ */
 public fun <A, B, R> Flow<A>.waitForLatestFrom(
     b: Flow<B>,
     transform: suspend (A, B) -> R
 ): Flow<R> = flow {
     coroutineScope {
-        val bStateFlow: StateFlow<B> = b.stateFlow(this)
+        val bStateFlow: StateFlow<B> = b.stateFlow(scope = this)
         collect { emit(transform(it, bStateFlow.value)) }
         // After primary flow completes normally, cancel any StateFlow generation sharing our scope
         currentCoroutineContext().cancelChildren()
     }
 }
 
+/**
+ * [GitHub issue #1315](https://github.com/Kotlin/kotlinx.coroutines/pull/1315)
+ *
+ * [GitHub issue #1498](https://github.com/Kotlin/kotlinx.coroutines/issues/1498)
+ */
 public fun <A, B, C, R> Flow<A>.waitForLatestFrom(
     b: Flow<B>,
     c: Flow<C>,
     transform: suspend (A, B, C) -> R
 ): Flow<R> = flow {
     coroutineScope {
-        val bStateFlow = b.stateFlow(this)
-        val cStateFlow = c.stateFlow(this)
+        val bStateFlow = b.stateFlow(scope = this)
+        val cStateFlow = c.stateFlow(scope = this)
         collect { emit(transform(it, bStateFlow.value, cStateFlow.value)) }
         // After primary flow completes normally, cancel any StateFlow generation sharing our scope
         currentCoroutineContext().cancelChildren()
     }
 }
 
+/**
+ * [GitHub issue #1315](https://github.com/Kotlin/kotlinx.coroutines/pull/1315)
+ *
+ * [GitHub issue #1498](https://github.com/Kotlin/kotlinx.coroutines/issues/1498)
+ */
 public fun <A, B, R> Flow<A>.transformAndWaitForLatestFrom(
     b: Flow<B>,
     transform: suspend FlowCollector<R>.(A, B) -> Unit
 ): Flow<R> = flow {
     coroutineScope {
-        val bStateFlow = b.stateFlow(this)
+        val bStateFlow = b.stateFlow(scope = this)
         collect { transform(it, bStateFlow.value) }
         // After primary flow completes normally, cancel any StateFlow generation sharing our scope
         currentCoroutineContext().cancelChildren()
