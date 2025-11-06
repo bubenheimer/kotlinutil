@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode.NO_COMPATIBILITY
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.Companion.fromTarget
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     id("maven-publish")
@@ -21,13 +24,19 @@ plugins {
 
 kotlin {
     jvmToolchain {
-        jvmToolchain(libs.versions.java.toolchain.get().toInteger())
+        jvmToolchain(libs.versions.java.toolchain.get().toInt())
     }
 
     sourceSets {
         all {
             languageSettings {
+                explicitApi()
+
                 progressiveMode = true
+
+                compilerOptions {
+                    verbose = true
+                }
             }
         }
 
@@ -39,40 +48,18 @@ kotlin {
 
         commonTest {
             dependencies {
-                implementation kotlin("test")
+                implementation(kotlin("test"))
             }
         }
     }
 
-    targets {
-        all {
-            compilations {
-                all {
-                    kotlinOptions {
-                        verbose = true
-                    }
-                }
-
-                main {
-                    explicitApi()
-                }
-            }
-        }
-    }
-
-    jvm() {
-        compilations {
-            all {
-                kotlinOptions {
-                    jvmTarget = libs.versions.java.source.get()
-                    freeCompilerArgs = [
-                            "-Xjvm-default=all"
-                    ]
-                }
-            }
+    jvm {
+        compilerOptions {
+            jvmTarget = fromTarget(libs.versions.java.source.get())
+            jvmDefault = NO_COMPATIBILITY
         }
     }
 }
 
-group = 'org.bubenheimer'
-version = '1.0-SNAPSHOT'
+group = "org.bubenheimer"
+version = "1.0-SNAPSHOT"
