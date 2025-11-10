@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget.Companion.fromTarget
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    id("maven-publish")
+    `maven-publish`
 }
 
 kotlin {
